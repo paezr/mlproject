@@ -1,0 +1,388 @@
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.lang.Math;
+
+public class Main {
+    public static void main(String args[]){
+        
+        Main main = new Main();
+        String address ="C:\\Users\\rodri\\OneDrive\\Desktop\\covid_early_symptoms_1.csv";       
+
+        // read rows example
+        ArrayList<String> fever = new ArrayList<>();
+        ArrayList<String> cough = new ArrayList<>();
+        ArrayList<String> runnyNose = new ArrayList<>();
+        ArrayList<String> muscleSoreness = new ArrayList<>();
+        ArrayList<String> pneumonia = new ArrayList<>();
+        ArrayList<String> diarrhea = new ArrayList<>();
+        ArrayList<String> lungInfection = new ArrayList<>();
+        ArrayList<String> travelHistory = new ArrayList<>();
+        ArrayList<String> isolationTreatment = new ArrayList<>();
+        ArrayList<String> covidDiagnosis = new ArrayList<>();
+        
+        // populate arrays
+        try {
+        InputStream is = new FileInputStream(address);
+        InputStreamReader isr = new InputStreamReader(is);
+        BufferedReader br = new BufferedReader(isr);
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] s = line.split(",");
+            
+            // prints column
+            //System.out.println(s[2]);
+            s[0] = null;
+            s[1] = null;
+            fever.add(s[2]);
+            cough.add(s[3]);
+            runnyNose.add(s[4]);
+            muscleSoreness.add(s[5]);
+            pneumonia.add(s[6]);
+            diarrhea.add(s[7]);
+            lungInfection.add(s[8]);
+            travelHistory.add(s[9]);
+            isolationTreatment.add(s[10]);
+            covidDiagnosis.add(s[11]);
+            
+        }
+        br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //initialize X
+        ArrayList<ArrayList<Double>> X = new ArrayList<>(5210);
+        
+        for(int i=0; i< 5210; i++){
+            X.add(new ArrayList());
+        }
+        
+        // Initialize Xtest
+        ArrayList<ArrayList<Double>> Xtest = new ArrayList<>(1302);
+        for(int i=0; i< 1302; i++){
+            Xtest.add(new ArrayList());
+        }
+
+        //populate X and X test
+        // save fever to an arraylist
+        for (int i=1; i<5211; i++){
+            char c = fever.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = fever.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+        
+        // save cough
+        for (int i=1; i<5211; i++){
+            char c = cough.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = cough.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+        
+        // save runnyNose
+        for (int i=1; i<5211; i++){
+            char c = runnyNose.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = runnyNose.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+        
+        // save muscleSoreness
+        for (int i=1; i<5211; i++){
+            char c = muscleSoreness.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = muscleSoreness.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+        
+        // pneumonia
+        for (int i=1; i<5211; i++){
+            char c = pneumonia.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = pneumonia.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+
+        // diarrhea
+        for (int i=1; i<5211; i++){
+            char c = diarrhea.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = diarrhea.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+        
+        // lungInfection
+        for (int i=1; i<5211; i++){
+            char c = lungInfection.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = lungInfection.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+
+        // travelHistory
+        for (int i=1; i<5211; i++){
+            char c = travelHistory.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = travelHistory.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+        
+        // isolationTreatment
+        for (int i=1; i<5211; i++){
+            char c = isolationTreatment.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            X.get(i-1).add(x);
+        }
+        
+        for (int i=5211; i<6513; i++){
+            char c = isolationTreatment.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Xtest.get(i-5211).add(x);
+        }
+       
+        // initialize Y
+        ArrayList<Double> Y = new ArrayList<>(5210);
+        
+        // populate Y
+        for (int i=1; i<5211; i++){
+            char c = covidDiagnosis.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Y.add(x);
+        }
+        
+        // prints one thing: System.out.println(Y.get(0));
+        // does not crash: System.out.println(Y.get(5209));
+        
+        // Initialize Ytest
+        ArrayList<Double> Ytest = new ArrayList<>(1302);
+        
+        // populate Ytest
+        for (int i=5211; i<6513; i++){
+            char c = covidDiagnosis.get(i).charAt(1);
+            String s = Character.toString(c);
+            double x = Double.parseDouble(s);
+            Ytest.add(x);
+        }
+        
+       // initialize weight
+        ArrayList<Double> weight = new ArrayList<>(5210);
+        ArrayList<Double> weightTest = new ArrayList<>(1302);
+        
+        // populate weight and weightTest
+        for (int i=0; i<5210; i++){
+            weight.add(0.0);
+        }
+        
+        for (int i=0; i<1302; i++){
+            weightTest.add(0.0);
+        }
+        
+        
+        // initialize step size
+        double stepSize = 0.2;
+         
+        ArrayList<Double> gradientResult = new ArrayList<>();
+        
+        // number of times gradient will be calculated
+        for (int i = 1; i<100; i++){
+            
+            gradientResult = main.gradient(X, Y, weight, 5209); // 2 = dataSize - 1 
+            
+            for (int j=0; j < 9; j++){
+                gradientResult.set(j, gradientResult.get(j)* -stepSize);
+            }
+              
+            for (int j=0; i<weight.size(); i++){               
+                weight.set(j, weight.get(j) + gradientResult.get(j));
+            }
+            // get new weight = old weight + stepSize * v
+            // how to calculate Ein and Eout from this
+        }
+        System.out.println(weight);
+        double Ein = main.calculateEin(weight,X,Y,5209);
+        System.out.println(Ein);
+        
+        
+    } // main func
+    
+    public ArrayList<Double> gradient(ArrayList<ArrayList<Double>> X, 
+            ArrayList<Double> Y,
+            ArrayList<Double> weight,
+            int data_size){
+        // calculation
+        ArrayList<Double> sigmaCalculation = new ArrayList<>(9);
+        for (int j=0; j < 9; j++){
+                sigmaCalculation.add(0.0);
+            }
+        double finalResult = 0;
+        double calc1 = 0;
+        double calc2 = 0;
+        double calc3 = 0;
+        double calc4 = 0;
+        double y = 0;
+        ArrayList<Double> x = new ArrayList<>();
+        ArrayList<Double> negY = new ArrayList<>();
+        for (int i = 0; i < data_size; i++){
+            
+            // negative Y
+            y = Y.get(i) * -1;
+            x = X.get(i);
+            
+            for (int j=0; j < data_size; j++){
+                weight.set(j, weight.get(j)* y);
+            }
+            
+            calc4 = multiplyVectors(weight, x);
+            
+            // logistic function
+            calc2 = logisticFunction(calc4);         
+            
+            for (int j=0; j < 9; j++){
+                x.set(j, x.get(j)* y);
+            }
+            
+            for (int j=0; j < 9; j++){
+                x.set(j, x.get(j)* calc2);
+            }
+            
+            for (int j=0; j < 9; j++){
+                // sigmaclaculatio is empty
+                sigmaCalculation.set(j, x.get(j) + sigmaCalculation.get(j));              
+            }
+            
+            for (int j=0; j < 9; j++){
+                sigmaCalculation.set(j, sigmaCalculation.get(j)/data_size);
+            }         
+        }
+        
+        return sigmaCalculation;
+    }
+    
+    public double logisticFunction(double input){//tested
+        input = input * -1;
+        double result = 1/(Math.pow(2.718, input) + 1);
+        return result;
+    }
+    
+    public ArrayList<Double> negativeY(ArrayList<Double> Y){
+        ArrayList<Double> negY = new ArrayList<Double>();
+        for (int i=0; i<Y.size(); i++){
+            negY.add(Y.get(i) * -1);
+        }
+        return negY;
+    }
+    
+    public double multiplyVectors(ArrayList<Double> a, 
+            ArrayList<Double> b){
+    double result = 0;
+    double z = 0;
+    for (int i = 0; i < 9; i++){
+        z = (a.get(i) * b.get(i));//error
+        result = result + z;
+    }
+    return result;
+    }
+    
+    public double calculateEin(ArrayList<Double> weight, 
+            ArrayList<ArrayList<Double>> X,
+            ArrayList<Double> Y, 
+            int data_size){
+        
+        double calc1 = 0;
+        double calc2 = 0;
+        double calc3 = 0;
+        double calc4 = 0;
+        double y = 0;
+        ArrayList<Double> x = new ArrayList<>();
+        double sigmaResult = 0;
+        
+        for (int i = 0; i < data_size; i++){
+                
+            // negative Y
+            y = Y.get(i) * -1;
+            x = X.get(i);
+            
+            // first calc inside logistic function
+            //calc1 = multiplyVectors(negY, weight);
+            for (int j=0; j < data_size; j++){
+                weight.set(j, weight.get(j)* y);
+            }
+            
+            // multiply updated weight with x(n)
+            calc4 = multiplyVectors(weight, x);
+            
+            // e to the above
+            calc2 = 1 + Math.pow(2.71828,calc4);    
+            
+            calc3 = Math.log(calc2);
+            
+            sigmaResult += calc3;
+            
+            }
+            return sigmaResult / data_size;
+        }
+        
+    }
